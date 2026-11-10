@@ -1,0 +1,6 @@
+UPLOAD_KEY=local-upload-key-for-local-dev-only-0
+S3_ENDPOINT=http://127.0.0.1:9000
+S3_REGION=us-east-1
+S3_BUCKET=transfer-smoke
+S3_ACCESS_KEY_ID=transfer-local
+S3_SECRET_ACCESS_KEY=transfer-local-secret

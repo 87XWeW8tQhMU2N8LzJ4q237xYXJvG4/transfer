@@ -1,0 +1,63 @@
+{
+  "name": "@notchhost/transfer-backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "deploy": "wrangler deploy --env=\"\"",
+    "check:deploy": "./scripts/check-deploy.sh",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --project test/tsconfig.json --noEmit",
+    "types": "wrangler types"
+  },
+  "cloudflare": {
+    "bindings": {
+      "UPLOAD_KEY": {
+        "description": "Bearer secret for every `/v1/` route. Generate one with `openssl rand -base64 32`."
+      },
+      "STORAGE_BACKEND": {
+        "description": "Selects object storage. Use `r2` for the FILES bucket or `s3` for the S3 secrets."
+      },
+      "MAX_UPLOAD_BYTES": {
+        "description": "Maximum declared upload size in bytes. The default is 104857600."
+      },
+      "FILES": {
+        "description": "R2 bucket that stores share objects. The bucket name is `transfer-files`."
+      },
+      "SHARE_TOKENS": {
+        "description": "Durable Object namespace that stores one share per token hash. It uses sqlite migration v1."
+      },
+      "S3_ENDPOINT": {
+        "description": "S3-compatible origin for the s3 environment, such as MinIO or Wasabi."
+      },
+      "S3_REGION": {
+        "description": "SigV4 region for the s3 environment."
+      },
+      "S3_BUCKET": {
+        "description": "Bucket name for the s3 environment."
+      },
+      "S3_ACCESS_KEY_ID": {
+        "description": "Access key id for the s3 environment."
+      },
+      "S3_SECRET_ACCESS_KEY": {
+        "description": "Secret access key for the s3 environment."
+      }
+    }
+  },
+  "dependencies": {
+    "aws4fetch": "1.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "0.23.0",
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vitest": "4.1.12",
+    "wrangler": "4.158.0"
+  },
+  "overrides": {
+    "sharp": "0.35.5",
+    "undici": "7.30.2",
+    "zod": "4.6.7"
+  }
+}

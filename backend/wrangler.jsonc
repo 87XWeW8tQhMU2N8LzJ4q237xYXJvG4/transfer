@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "transfer-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-08",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "STORAGE_BACKEND": "r2",
+    "MAX_UPLOAD_BYTES": "104857600"
+  },
+  "secrets": {
+    "required": ["UPLOAD_KEY"]
+  },
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "transfer-files"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SHARE_TOKENS",
+        "class_name": "ShareToken"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["ShareToken"]
+    }
+  ],
+  "observability": {
+    "enabled": false
+  },
+  "env": {
+    "s3": {
+      "vars": {
+        "STORAGE_BACKEND": "s3",
+        "MAX_UPLOAD_BYTES": "104857600"
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "SHARE_TOKENS",
+            "class_name": "ShareToken"
+          }
+        ]
+      },
+      // Not inherited. Empty so the resolved s3 worker has no R2 binding.
+      "r2_buckets": [],
+      "secrets": {
+        "required": [
+          "UPLOAD_KEY",
+          "S3_ENDPOINT",
+          "S3_REGION",
+          "S3_BUCKET",
+          "S3_ACCESS_KEY_ID",
+          "S3_SECRET_ACCESS_KEY"
+        ]
+      }
+    }
+  }
+}
